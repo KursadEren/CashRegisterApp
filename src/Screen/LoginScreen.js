@@ -1,10 +1,9 @@
 import React, { useState, useEffect } from 'react';
-import { View, StyleSheet, Image, BackHandler } from 'react-native';
+import { View, StyleSheet, Image, BackHandler, Alert } from 'react-native';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import MyTextInput from '../Component/MyTextınput';
 import MyButton from '../Component/MyButton';
-import { useLandscape } from '../Context/LandSpaceProvider'; 
-
-const API_URL = 'http://localhost:3000';
+import { useLandscape } from '../Context/LandSpaceProvider';
 
 function LoginScreen({ navigation }) {
   const [username, setUsername] = useState("");
@@ -21,7 +20,14 @@ function LoginScreen({ navigation }) {
   }, []);
 
   const handleLogin = async () => {
-    navigation.navigate("MyTabs");
+    try {
+      const storedPassword = await AsyncStorage.getItem('@user_' + username);
+      console.log('Stored password:'demo1234'Error', 'Invalid username or password');
+      }
+    } catch (e) {
+      console.log('Error:', e);
+      Alert.alert('Error', 'Failed to login');
+    }
   };
 
   return (
@@ -31,10 +37,13 @@ function LoginScreen({ navigation }) {
         <MyTextInput onChangeText={setUsername} label1="Name" />
       </View>
       <View style={styles.textInputContainer}>
-        <MyTextInput onChangeText={setPassword} label1="password" secureTextEntry />
+        <MyTextInput onChangeText={setPassword} label1="Password" secureTextEntry />
       </View>
       <View style={styles.textInputContainer}>
         <MyButton visible={true} iconname="login" OnChangeButton={handleLogin} text="Giriş Yap" />
+      </View>
+      <View style={styles.textInputContainer}>
+        <MyButton visible={true} iconname="register" OnChangeButton={() => navigation.navigate('Register')} text="Kayıt Ol" />
       </View>
     </View>
   );
