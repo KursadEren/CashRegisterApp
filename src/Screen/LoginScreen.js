@@ -20,7 +20,6 @@ function LoginScreen({ navigation }) {
   }, []);
 
   const handleLogin = async () => {
-    navigation.navigate("MyTabs");
     try {
       const storedPassword = await AsyncStorage.getItem('@user_' + username);
       console.log('Stored password:'demo1234'Error', 'Invalid username or password');
@@ -78,3 +77,4 @@ const styles = StyleSheet.create({
 });
 
 export default LoginScreen;
+
